@@ -1,0 +1,121 @@
+boolean upHold, leftHold, downHold, rightHold, shiftHold, zHold, xHold, cHold = false;
+
+Cam2D camera;
+
+Player player;
+
+// keycodes
+private final int UP_KEY    = 38;
+private final int LEFT_KEY  = 37;
+private final int DOWN_KEY  = 40;
+private final int RIGHT_KEY = 39;
+private final int SHIFT_KEY = 16;
+private final int Z_KEY     = 90;
+private final int X_KEY     = 88;
+private final int C_KEY     = 67
+
+ArrayList<GameObject> gameObjects = new ArrayList<GameObject>();
+
+int oldMil;          // keep track of the millisecond from last frame
+float deltaTime = 0; // the time it took between last frame and this frame
+
+void setup() {
+  size(1280, 720, P2D);
+
+  camera = new Cam2D();
+  player = new Player(20,"Sprites/Ship/Ship");
+
+  for (int c = 0; c < 100; c++) {
+    gameObjects.add(new Actor(random(-width,width),random(-height,height)));
+  }
+
+  oldMil = millis();
+} //<>//
+
+void draw() {
+  background(255); //<>//
+
+  // update delta millisecond
+  deltaTime = (millis() - oldMil)*0.06;
+  oldMil = millis();
+
+  // update everything first
+  player.update();
+
+  for (GameObject gb : gameObjects)
+    gb.update();
+
+  // then update the camera
+  camera.des = new PVector(width/4-player.loc.x,height/2);
+  camera.update();
+
+  // draw everything that can be drawn
+  for (GameObject gb : gameObjects) {
+    if (gb instanceof Actor) {
+      Actor a = (Actor) gb;
+      a.drawImage();
+    }
+  }
+
+  player.drawImage();
+
+}
+
+void keyPressed() {
+  switch (keyCode) {
+    case UP_KEY:
+      upHold = true;
+      break;
+    case LEFT_KEY:
+      leftHold = true;
+        break;
+    case DOWN_KEY:
+      downHold = true;
+      break;
+    case RIGHT_KEY:
+      rightHold = true;
+      break;
+    case SHIFT_KEY:
+      shiftHold = true;
+      break;
+    case Z_KEY:
+      zHold = true;
+      break;
+    case X_KEY:
+      xHold = true;
+      break;
+    case C_KEY:
+      cHold = true;
+      break;
+  }
+}
+
+
+void keyReleased() {
+  switch (keyCode) {
+    case UP_KEY:
+      upHold = false;
+      break;
+    case LEFT_KEY:
+      leftHold = false;
+        break;
+    case DOWN_KEY:
+      downHold = false;
+      break;
+    case RIGHT_KEY:
+      rightHold = false;
+      break;
+    case SHIFT_KEY:
+      shiftHold = false;
+      break;
+    case Z_KEY:
+      zHold = false;
+      break;
+    case X_KEY:
+      xHold = false;
+      break;
+    case C_KEY:
+      cHold = false;
+      break;
+  }
+}
